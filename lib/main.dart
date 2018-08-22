@@ -52,6 +52,10 @@ class MyHomePage extends StatelessWidget {
                       builder: (context) => RawPage(),
                     )),
               ),
+              Text(
+                '${Platform.version}',
+                style: Theme.of(context).textTheme.body1,
+              )
             ]),
       ),
     );
@@ -75,14 +79,20 @@ abstract class CommonPage {
 
     if (context.widget is! Material &&
         context.ancestorWidgetOfExactType(Material) == null) {
-      return Material(
-        child: textField,
-        type: MaterialType.canvas,
-        color: CupertinoColors.white,
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Material(
+          child: textField,
+          type: MaterialType.canvas,
+          color: CupertinoColors.white,
+        ),
       );
     }
 
-    return textField;
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: textField,
+    );
   }
 
   Widget buildBody(BuildContext context) {
@@ -129,6 +139,7 @@ class _MaterialPageState extends State<MaterialPage> with CommonPage {
       appBar: AppBar(
         title: Text('Material'),
       ),
+      backgroundColor: Colors.lightBlue,
       body: buildBody(context),
     );
   }
@@ -147,6 +158,7 @@ class _CupertinoPageState extends State<CupertinoPage> with CommonPage {
           backgroundColor: Colors.white30,
           middle: Text('Cupertino'),
         ),
+        backgroundColor: Colors.green,
         child: buildBody(context));
   }
 }
@@ -166,7 +178,7 @@ class _RawPageState extends State<RawPage> with CommonPage {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: Colors.lightBlue,
+        color: Colors.deepOrange,
       ),
       child: Padding(
         padding: minInsets,
