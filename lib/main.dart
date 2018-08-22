@@ -25,32 +25,34 @@ class MyHomePage extends StatelessWidget {
       color: Colors.red,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(8.0, 46.0, 8.0, 46.0),
-        child: Column(children: <Widget>[
-          RaisedButton(
-            child: Text('Material'),
-            onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MaterialPage(),
-                )),
-          ),
-          RaisedButton(
-            child: Text('Cupertino'),
-            onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CupertinoPage(),
-                )),
-          ),
-          RaisedButton(
-            child: Text('Raw'),
-            onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => RawPage(),
-                )),
-          ),
-        ]),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              RaisedButton(
+                child: Text('Material'),
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MaterialPage(),
+                    )),
+              ),
+              RaisedButton(
+                child: Text('Cupertino'),
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CupertinoPage(),
+                    )),
+              ),
+              RaisedButton(
+                child: Text('Raw'),
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RawPage(),
+                    )),
+              ),
+            ]),
       ),
     );
   }
@@ -71,7 +73,8 @@ abstract class CommonPage {
       style: Theme.of(context).textTheme.display1,
     );
 
-    if (Platform.isIOS) {
+    if (context.widget is! Material &&
+        context.ancestorWidgetOfExactType(Material) == null) {
       return Material(
         child: textField,
         type: MaterialType.canvas,
@@ -88,9 +91,24 @@ abstract class CommonPage {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text(
-            'Some label',
-            style: Theme.of(context).textTheme.display1,
+          Row(
+            children: <Widget>[
+              CupertinoButton(
+                child: Icon(
+                  Icons.arrow_back,
+                  color: Colors.grey,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              Text(
+                'Top label',
+                style: Theme.of(context).textTheme.display1.copyWith(
+                      color: Colors.grey,
+                    ),
+              ),
+            ],
           ),
           buildInput(context),
         ],
@@ -146,10 +164,15 @@ class _RawPageState extends State<RawPage> with CommonPage {
       bottom: mediaQuery.viewInsets.bottom,
     );
 
-    return Padding(
-      padding: minInsets,
-      child: Container(
-        child: buildBody(context),
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: Colors.lightBlue,
+      ),
+      child: Padding(
+        padding: minInsets,
+        child: Container(
+          child: buildBody(context),
+        ),
       ),
     );
   }
